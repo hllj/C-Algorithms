@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-const int NMAX      =   20; 
+const int NMAX      =   25; 
 int N, K;
 int count = 0; // Count the number of K-Combination
 int X[NMAX]; //Vector X saving the selected number of each step
