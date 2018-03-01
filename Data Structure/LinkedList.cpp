@@ -30,12 +30,27 @@ struct LinkedList {
             p = p->pNext;
         }
     }
+    void deleteNodeWithValue(int value) {
+        Node* p;
+        p = head;
+        while (p->pNext != NULL) {
+            if (p->pNext->info == value) {
+                Node* next = p->pNext->pNext;
+                delete(p->pNext);
+                p->pNext = next;
+            }
+            p = p->pNext;
+            if (p == NULL) break;
+        }
+    }
 };
 int main() {
     LinkedList* myList = new LinkedList;
     myList->insertNode(2);
     myList->insertNode(3);
     myList->insertNode(4);
+    myList->insertNode(3);
+    myList->deleteNodeWithValue(3);
     myList->displayList();
     return 0;
 }
