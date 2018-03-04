@@ -43,6 +43,21 @@ struct LinkedList {
             if (p == NULL) break;
         }
     }
+    void reverse() {
+        Node* p;
+        p = head;
+        Node* prev = NULL;
+        while (p != NULL) {
+            Node* newNode = new Node;
+            newNode->info = p->info;
+            if (prev == NULL) newNode->pNext = NULL;
+            else 
+                newNode->pNext = prev;
+            prev = newNode;
+            p = p->pNext;
+        }
+        head = prev;
+    }
 };
 int main() {
     LinkedList* myList = new LinkedList;
@@ -50,7 +65,8 @@ int main() {
     myList->insertNode(3);
     myList->insertNode(4);
     myList->insertNode(3);
-    myList->deleteNodeWithValue(3);
+    //myList->deleteNodeWithValue(3);
+    myList->reverse();
     myList->displayList();
     return 0;
 }
