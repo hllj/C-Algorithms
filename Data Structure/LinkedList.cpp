@@ -48,13 +48,10 @@ struct LinkedList {
         p = head;
         Node* prev = NULL;
         while (p != NULL) {
-            Node* newNode = new Node;
-            newNode->info = p->info;
-            if (prev == NULL) newNode->pNext = NULL;
-            else 
-                newNode->pNext = prev;
-            prev = newNode;
-            p = p->pNext;
+            Node* next = p->pNext;
+            p->pNext = prev;
+            prev = p;
+            p = next;
         }
         head = prev;
     }
