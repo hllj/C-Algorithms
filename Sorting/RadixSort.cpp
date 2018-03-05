@@ -1,6 +1,4 @@
 #include <iostream>
-#include <vector>
-#include <queue>
 #include <stdlib.h>
 using namespace std;
 const int NMAX      =   1000;
@@ -19,31 +17,16 @@ int getbit(int x, int i) {
     return (x >> i) & 1; 
 }
 void RadixSort(int a[], int N) {
-    queue <int> q;
-    queue <int> bucket[2];
-    for (int i = 0; i < N; i++)
-        q.push(a[i]);
+    int d[NMAX];
     for (int k = 0; k < 32; k++) {
-        while (!q.empty()) {
-            int u = q.front();
-            q.pop();
-            int bit = getbit(u, k);
-            bucket[bit].push(u);
-        }
-        while (!bucket[0].empty()) {
-            int u = bucket[0].front();
-            bucket[0].pop();
-            q.push(u);
-        }
-        while (!bucket[1].empty()) {
-            int u = bucket[1].front();
-            bucket[1].pop();
-            q.push(u);
-        }
-    }
-    for (int i = 0; i < N; i++) {
-        a[i] = q.front();
-        q.pop();
+        int b[2] = {0};
+        for (int i = 0; i < N; i++) 
+            b[getbit(a[i], k)]++;
+        b[1] += b[0];
+        for (int i = N - 1; i >= 0; i--) 
+            d[--b[getbit(a[i], k)]] = a[i];
+        for (int i = 0; i < N; i++)
+            a[i] = d[i];
     }
 }
 int main() {
