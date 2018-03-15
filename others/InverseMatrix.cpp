@@ -65,22 +65,43 @@ void swap(frac x, frac y) {
     x = y;
     y = tmp;
 }
+int gcd(int x, int y) {
+    while (y != 0) {
+        int r = x % y;
+        x = y;
+        y = r;
+    }
+    return x;
+}
+frac reduce(frac x) {
+    frac res;
+    if (x.ts == 0) {
+        res.ts = 0;
+        res.ms = 1;
+    }
+    else {
+        int _gcd = gcd(abs(x.ts), abs(x.ms));
+        res.ts = x.ts / _gcd;
+        res.ms = x.ms / _gcd;
+    }
+    return res;
+}
 void GaussJordan() {
     int x = 1, y = 1;
     while (x <= n && y <= n) {
         if (a[x][y].ts != 0) {
             frac t = a[x][y];
             for (int j = 1; j <= n; j++)
-                a[x][j] = div(a[x][j], t);
+                a[x][j] = reduce(div(a[x][j], t));
             for (int j = 1; j <= n; j++)
-                I[x][j] = div(I[x][j], t);
+                I[x][j] = reduce(div(I[x][j], t));
             for (int k = 1; k <= n; k++)
             if (k != x) {
                 frac t = div(a[k][y], a[x][y]);
                 for (int j = 1; j <= n; j++)
-                    a[k][j] = sub(a[k][j], mul(a[x][j], t));
+                    a[k][j] = reduce(sub(a[k][j], mul(a[x][j], t)));
                 for (int j = 1; j <= n; j++)
-                    I[k][j] = sub(I[k][j], mul(I[x][j], t));
+                    I[k][j] = reduce(sub(I[k][j], mul(I[x][j], t)));
             }
             x++;
             y++;
@@ -110,31 +131,19 @@ int Condition() {
     sumDiagon.ms = 1;
     for (int i = 1; i <= n; i++)
     for (int j = 1; j <= n; j++) {
-        sum = add(sum, a[i][j]);
+        sum = reduce(add(sum, a[i][j]));
         if (i == j && a[i][j].ts == a[i][j].ms) {
-            sumDiagon = add(sumDiagon, a[i][j]);
+            sumDiagon = reduce(add(sumDiagon, a[i][j]));
             rank++;
         }
     }
     if (equal(sum, sumDiagon)&& rank == n) return 1;
     else return 0;
 }
-int gcd(int x, int y) {
-    while (y != 0) {
-        int r = x % y;
-        x = y;
-        y = r;
-    }
-    return x;
-}
 void convertMatrix() {
     for (int i = 1; i <= n; i++)
     for (int j = 1; j <= n; j++)
-    if (I[i][j].ts != 0) {
-        int _gcd = gcd(abs(I[i][j].ts), abs(I[i][j].ms));
-        I[i][j].ts /= _gcd;
-        I[i][j].ms /= _gcd;
-    }
+        I[i][j] = reduce(I[i][j]);
     int flcm = 1;
     int fgcd = 1;
     for (int i = 1; i <= n; i++)
@@ -158,8 +167,8 @@ void printMatrix() {
     }
 }
 int main() {
-    freopen("inversematrix.inp", "r", stdin);
-    freopen("inversematrix.out", "w", stdout);
+    //freopen("inversematrix.inp", "r", stdin);
+    //freopen("inversematrix.out", "w", stdout);
     readMatrix();
     init();
     GaussJordan();
@@ -171,3 +180,4 @@ int main() {
         cout << "This Matrix doesn't have Inverse Matrix";
     return 0;
 }
+
