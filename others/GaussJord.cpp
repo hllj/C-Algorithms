@@ -50,18 +50,39 @@ void swaprow(int x, int y) {
         a[y][j] = tmp;
     }
 }
+int gcd(int x, int y) {
+    while (y != 0) {
+        int r = x % y;
+        x = y;
+        y = r;
+    }
+    return x;
+}
+frac reduce(frac x) {
+    frac res;
+    if (x.ts == 0) {
+        res.ts = 0;
+        res.ms = 1;
+    }
+    else {
+        int _gcd = gcd(abs(x.ts), abs(x.ms));
+        res.ts = x.ts / _gcd;
+        res.ms = x.ms / _gcd;
+    }
+    return res;
+}
 void GaussElimination() {
     int x = 1, y = 1;
     while (x <= n && y <= m) {
         if (a[x][y].ts != 0) {
             frac t = a[x][y];
             for (int j = 1; j <= m; j++)
-                a[x][j] = div(a[x][j], t);
+                a[x][j] = reduce(div(a[x][j], t));
             for (int k = 1; k <= n; k++)
             if (k != x) {
                 frac t = div(a[k][y], a[x][y]);
                 for (int j = 1; j <= m; j++)
-                    a[k][j] = sub(a[k][j], mul(a[x][j], t));
+                    a[k][j] = reduce(sub(a[k][j], mul(a[x][j], t)));
             }
             x++;
             y++;
@@ -78,29 +99,17 @@ void GaussElimination() {
         }
     }
 }
-int gcd(int x, int y) {
-    while (y != 0) {
-        int r = x % y;
-        x = y;
-        y = r;
-    }
-    return x;
-}
 void convertMatrix() {
     for (int i = 1; i <= n; i++)
     for (int j = 1; j <= m; j++)
-    if (a[i][j].ts != 0) {
-        int _gcd = gcd(abs(a[i][j].ts), abs(a[i][j].ms));
-        a[i][j].ts /= _gcd;
-        a[i][j].ms /= _gcd;
-    }
+        a[i][j] = reduce(a[i][j]);
     int flcm = 1;
     int fgcd = 1;
     for (int i = 1; i <= n; i++)
     for (int j = 1; j <= m; j++)
         if (a[i][j].ts != 0) {
             fgcd = gcd(fgcd, abs(a[i][j].ms));
-            flcm = flcm * a[i][j].ms / fgcd;
+            flcm = (flcm * a[i][j].ms) / fgcd;
         }
         else res[i][j] = 0;
     for (int i = 1; i <= n; i++)
