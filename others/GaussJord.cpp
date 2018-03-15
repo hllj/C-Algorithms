@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <iostream>
 using namespace std;
 const int MAX       =   1e3;
@@ -89,7 +90,7 @@ void convertMatrix() {
     for (int i = 1; i <= n; i++)
     for (int j = 1; j <= m; j++)
     if (a[i][j].ts != 0) {
-        int _gcd = (a[i][j].ts, a[i][j].ms);
+        int _gcd = gcd(abs(a[i][j].ts), abs(a[i][j].ms));
         a[i][j].ts /= _gcd;
         a[i][j].ms /= _gcd;
     }
@@ -98,7 +99,7 @@ void convertMatrix() {
     for (int i = 1; i <= n; i++)
     for (int j = 1; j <= m; j++)
         if (a[i][j].ts != 0) {
-            fgcd = gcd(fgcd, a[i][j].ms);
+            fgcd = gcd(fgcd, abs(a[i][j].ms));
             flcm = flcm * a[i][j].ms / fgcd;
         }
         else res[i][j] = 0;
