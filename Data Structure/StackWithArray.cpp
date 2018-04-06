@@ -12,39 +12,33 @@ struct Stack {
     bool isFull() {
         return (top == NMAX - 1) ? 1 : 0;
     }
-    int get(int &Success) {
-        if (isEmpty()) {
-            printf("Stack is empty!\n");
-            Success = 0;
-            return 0;
-        }
-        else {
-            Sucess = 1;
-            return items[top - 1];
-        }
-    }
     void push(int value) {
         if (isFull()) {
             printf("Stack is full!\n");
+            return;
         }
-        else items[++top] = value;
+        items[top++] = value;
     }
-    int pop(int &Success) {
+    int get() {
+        return items[top - 1];
+    }
+    void pop() {
         if (isEmpty()) {
             printf("Stack is empty!\n");
-            Success = 0;
-            return 0;
+            return;
         }
-        else {
-            int result = items[top - 1];
-            top--;
-            Success = 1;
-            return result;
-        }
+        top--;
     }
 };
 int main() {
     Stack* myStack = new Stack;
-
+    myStack->push(2);
+    myStack->push(3);
+    myStack->push(1);
+    myStack->push(4);
+    while (!myStack->isEmpty()) {
+        printf("%d ", myStack->get());
+        myStack->pop();
+    }
     return 0;
 }
