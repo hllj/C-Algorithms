@@ -34,6 +34,7 @@ string LongestPalindrome(string s, int n) {
             maxLen = f[i];
             CenterIndex = i;
         }
+    delete[] f;
     return a.substr((CenterIndex - 1 - maxLen) / 2, maxLen);
 }
 int main() {
