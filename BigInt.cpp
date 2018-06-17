@@ -6,7 +6,7 @@ const int base = 1e9;
 typedef long long ll;
 struct bigInt {
     int len;
-    ll d[1000];
+    ll d[2000];
 };
 bigInt f[NMAX];
 bigInt operator +(bigInt a, bigInt b) {
