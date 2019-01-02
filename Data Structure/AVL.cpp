@@ -28,11 +28,19 @@ int getBalance(NODE* pTree) {
 	return getHeight(pTree->pRight) - getHeight(pTree->pLeft);
 }
 
+void updateHeight(NODE* pNode) {
+	pNode->height = 1 + max(getHeight(pNode->pLeft), getHeight(pNode->pRight));
+}
+
 NODE* leftRotate(NODE* pNode) {
 	NODE* Q = pNode->pRight;
 	NODE* T = Q->pLeft;
 	pNode->pRight = T;
 	Q->pLeft = pNode;
+
+	updateHeight(pNode);
+	updateHeight(Q);
+
 	return Q;
 }
 NODE* rightRotate(NODE* pNode) {
@@ -40,6 +48,10 @@ NODE* rightRotate(NODE* pNode) {
 	NODE* T = Q->pRight;
 	pNode->pLeft = T;
 	Q->pRight = pNode;
+
+	updateHeight(pNode);
+	updateHeight(Q);
+
 	return Q;
 }
 NODE* insert(NODE*& pTree, int key) {
@@ -54,7 +66,7 @@ NODE* insert(NODE*& pTree, int key) {
 		pTree->pLeft = insert(pTree->pLeft, key);
 	}
 
-	pTree->height = 1 + max(getHeight(pTree->pLeft), getHeight(pTree->pRight));
+	updateHeight(pTree);
 	int bal = getBalance(pTree);
 
 	if (bal > 1 && key > pTree->pRight->key) {
@@ -83,9 +95,9 @@ void traverse(NODE* pTree) {
 int main() {
 	NODE* Tree = NULL;
 	init(Tree);
-	int a[10] = { 2, 5, 4, 6, 9, 4, 12, 16, 8, 20 };
-	for (int i = 0; i < 10; i++)
-		insert(Tree, a[i]);
+	int a[13] = { 45, 36, 15, 29, 57, 78, 60, 83, 79, 96, 29, 99, 97};
+	for (int i = 0; i < 13; i++)
+		Tree = insert(Tree, a[i]);
 	traverse(Tree);
 	_getch();
 	return 0;
