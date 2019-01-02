@@ -15,19 +15,35 @@ void displayArray(int a[], int N) {
         cout << a[i] << " ";
     cout << "\n";
 }
-void HeapSort(int a[], int N) {
-    priority_queue <int, vector <int>, greater <int> > q;
-    for (int i = 0; i < N; i++) 
-        q.push(a[i]);
-    for (int i = 0; i < N; i++) {
-        a[i] = q.top();
-        q.pop();
+void heapify(int a[], int n, int i) {
+    int m = i;
+    int l = 2 * i + 1;
+    int r = 2 * i + 2;
+    if (a[l] > a[m] && l < n) {
+        m = l;
     }
+    if (a[r] > a[m] && r < n) {
+        m = r;
+    }
+    cout << i << " " << m << "\n";
+    if (m != i) {
+        swap(a[m], a[i]);
+        heapify(a, n, m);
+    }
+}
+void HeapSort(int a[], int N) {
+    for (int i = N / 2 - 1; i >= 0; i--) {
+        heapify(a, N, i);
+    }
+    for (int i = N - 1; i >= 0; i--) {
+        swap(a[0], a[i]);
+        heapify(a, i, 0);
+    }
+
 }
 int main() {
     int a[NMAX], N;
     createArray(a, N);
-    displayArray(a, N);
     HeapSort(a, N);
     displayArray(a, N);
     return 0;
