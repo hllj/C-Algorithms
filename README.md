@@ -38,3 +38,5 @@
  -	[x] Finding k-Permutation of N
  -	[x] Finding k-Combination of N
  -	[x] Eight Queens Problem
+
+ Testing 123
